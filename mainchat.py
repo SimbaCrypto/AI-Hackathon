@@ -24,5 +24,5 @@ if __name__ == "__main__":
   print("Welcome to Your Well Assistant!")
   user_input = input("Type your Medical question or topic: ")
   reply = custom_gemini_chat(user_input)
-  print("\nGemini's Reply:")
+  print("\nwellness's Reply:")
   print(reply)
