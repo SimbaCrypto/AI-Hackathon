@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wellness Assistant</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Welcome to Your Wellness Assistant!</h1>
+      <p>Type your medical question below to get expert advice.</p>
+    </header>
+    <main>
+      <form id="chat-form">
+        <textarea id="user-input" placeholder="Type your medical question here..." required></textarea>
+        <button type="submit">Get Advice</button>
+      </form>
+      <div id="response-container" class="reply-box">
+        <h2>Wellness's Reply:</h2>
+        <p id="response-text">Your response will appear here...</p>
+      </div>
+    </main>
+  </div>
+  
+</body>
+</html>
+
+
+  <script>
+    const socket = io();
+  
+    document.getElementById('chat-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const userInput = document.getElementById('user-input').value;
+      socket.emit('message', userInput);
+    });
+  
+    socket.on('response', function(response) {
+      // Clear the previous content
+      const responseContainer = document.getElementById('response-text');
+      responseContainer.innerHTML = ""; 
+  
+      // Split the response into paragraphs by double newlines or periods
+      const paragraphs = response.split(/\n\n|\.\s+/);
+  
+      // Append each paragraph as a new line
+      paragraphs.forEach(paragraph => {
+        if (paragraph.trim()) {
+          const p = document.createElement('p');
+          p.textContent = paragraph.trim();
+          responseContainer.appendChild(p);
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
